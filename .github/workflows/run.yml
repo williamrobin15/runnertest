@@ -1,11 +1,12 @@
-name: My First GitHub Action
+name: UI ENV Hello World
 
 on: push
 
 jobs:
-  hello-job:
+  env-job:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Print Hello
-        run: echo "Hello GitHub Actions"
+      - name: Print UI env variables
+        run: |
+          echo "Message: $UI_MESSAGE"
+          echo "Message: $UI_MESSAGE2"
