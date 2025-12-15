@@ -6,7 +6,7 @@ jobs:
   env-job:
     runs-on: ubuntu-latest
     steps:
-      - name: Print UI env variables
+      - name: Print UI variables
         run: |
-          echo "Message: $UI_MESSAGE"
-          echo "Message: $UI_MESSAGE2"
+          echo "Message 1: ${{ vars.UI_MESSAGE }}"
+          echo "Message 2: ${{ vars.UI_MESSAGE2 }}"
