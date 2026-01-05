@@ -1,12 +1,7 @@
-name: UI ENV Hello World
-
-on: push
-
+name: First
+on : push
 jobs:
-  env-job:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Print UI variables
-        run: |
-          echo "Message 1: ${{ vars.UI_MESSAGE }}"
-          echo "Message 2: ${{ vars.UI_MESSAGE2 }}"
+  rohan:
+       runs-on: ubuntu-latest
+       steps:
+        - run: echo "hello world"
