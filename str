@@ -1,0 +1,185 @@
+name: First
+on : push
+jobs:
+  rohan:
+       runs-on: ubuntu-latest
+       steps:
+        - run: echo "hello world"
+
+
+
+
+**********************************************
+
+
+name: level2
+
+on: push
+
+jobs:
+  robin:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Print start message
+        run: echo "Job1 Start"
+
+      - name: Set env
+        run: echo "APP_NAME=rr" >> $GITHUB_ENV
+
+      - name: Use env Variable
+        run: echo "app name $APP_NAME"
+
+
+************************************************
+
+
+name: level3-ci
+
+on: push
+
+jobs:
+  checkout:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Show files
+        run: ls -l
+
+      - name: Print env
+        run: echo "App is $APP_NAME"
+        env:
+          APP_NAME: demo-app
+
+
+
+
+********************************************************
+
+
+
+
+name : level4
+
+on:push
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+
+    steps:
+      - name: checkout
+        uses: actions/checkout@v4
+
+      - name Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version:18
+
+
+      - name: Install
+        run: npm install
+
+      - name: Run build
+        run: npm run build
+       
+
+*****************************************************
+
+
+
+name : level4
+
+on:push
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+
+    steps:
+      - name: checkout
+        uses: actions/checkout@v4
+
+      - name Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version:18
+
+
+      - name: Install
+        run: npm install
+
+      - name: Run build
+        run: npm run build
+
+
+
+*********************************************************
+
+
+
+name: docker-build
+
+on: push
+
+jobs:
+  docker:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Build Docker image
+        run: docker build -t myapp:latest .
+
+
+**********************************************************
+
+
+name: docker-build-and-push
+
+on: push
+
+jobs:
+  docker:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Login to DockerHub
+        run: |
+          echo "${{ secrets.DOCKER_TOKEN }}" | docker login \
+            -u "${{ secrets.DOCKER_USERNAME }}" \
+            --password-stdin
+
+      - name: Set image tag
+        run: echo "IMAGE_TAG=${GITHUB_SHA::7}" >> $GITHUB_ENV
+
+      - name: Build Docker image
+        run: docker build -t ${{ secrets.DOCKER_USERNAME }}/myapp:${IMAGE_TAG} .
+
+      - name: Push Docker image
+        run: docker push ${{ secrets.DOCKER_USERNAME }}/myapp:${IMAGE_TAG}
+
+
+
+***************************************************************
+
+
+
+
+
+
+
+
+
+
+
