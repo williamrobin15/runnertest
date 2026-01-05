@@ -1,17 +1,19 @@
-name: level2
+name: level3-ci
 
 on: push
 
 jobs:
-  robin:
+  checkout:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Print start message
-        run: echo "Job1 Start"
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-      - name: Set env
-        run: echo "APP_NAME=rr" >> $GITHUB_ENV
+      - name: Show files
+        run: ls -l
 
-      - name: Use env Variable
-        run: echo "app name $APP_NAME"
+      - name: Print env
+        run: echo "App is $APP_NAME"
+        env:
+          APP_NAME: demo-app
