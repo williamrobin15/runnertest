@@ -1,19 +1,22 @@
-name: level3-ci
+name: level4-build
 
 on: push
 
 jobs:
-  checkout:
+  build:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Show files
-        run: ls -l
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
 
-      - name: Print env
-        run: echo "App is $APP_NAME"
-        env:
-          APP_NAME: demo-app
+      - name: Install deps
+        run: npm install
+
+      - name: Run build
+        run: npm run build
