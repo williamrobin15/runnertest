@@ -1,7 +1,17 @@
-name: First
-on : push
+name: level2
+
+on: push
+
 jobs:
-  rohan:
-       runs-on: ubuntu-latest
-       steps:
-        - run: echo "hello world"
+  robin:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Print start message
+        run: echo "Job1 Start"
+
+      - name: Set env
+        run: echo "APP_NAME=rr" >> $GITHUB_ENV
+
+      - name: Use env Variable
+        run: echo "app name $APP_NAME"
