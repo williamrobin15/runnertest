@@ -1,22 +1,14 @@
-name: level4-build
+name: docker-build
 
 on: push
 
 jobs:
-  build:
+  docker:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: 18
-
-      - name: Install deps
-        run: npm install
-
-      - name: Run build
-        run: npm run build
+      - name: Build Docker image
+        run: docker build -t myapp:latest .
