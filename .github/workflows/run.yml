@@ -1,26 +1,38 @@
-name: docker-build-and-push
+name: Build and Push Docker Image
 
-on: push
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
 
 jobs:
-  docker:
+  build-push:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
 
     steps:
-      - name: Checkout code
+      - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Login to DockerHub
+      - name: Authenticate to GCP via WIF
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: ${{ secrets.WIF_PROVIDER }}
+          service_account: ${{ secrets.WIF_SA }}
+
+      - name: Configure Docker for Artifact Registry
         run: |
-          echo "${{ secrets.DOCKER_TOKEN }}" | docker login \
-            -u "${{ secrets.DOCKER_USERNAME }}" \
-            --password-stdin
+          gcloud auth configure-docker asia-south1-docker.pkg.dev --quiet
 
-      - name: Set image tag
-        run: echo "IMAGE_TAG=${GITHUB_SHA::7}" >> $GITHUB_ENV
-
-      - name: Build Docker image
-        run: docker build -t ${{ secrets.DOCKER_USERNAME }}/myapp:${IMAGE_TAG} .
-
-      - name: Push Docker image
-        run: docker push ${{ secrets.DOCKER_USERNAME }}/myapp:${IMAGE_TAG}
+      - name: Build and Push
+        run: |
+          IMAGE="asia-south1-docker.pkg.dev/project-eefd8d29-a5e4-42f7-964/task-repo/task-backend"
+          
+          docker build -t $IMAGE:${{ github.sha }} .
+          docker push $IMAGE:${{ github.sha }}
+          
+          # latest tag bhi push karo
+          docker tag $IMAGE:${{ github.sha }} $IMAGE:latest
+          docker push $IMAGE:latest
